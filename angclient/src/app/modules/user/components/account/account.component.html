@@ -1,0 +1,49 @@
+<div class="container">
+    <div class="limiter-pagecontent">
+        <!-- <div class="container-login100" style="background-image: url('images/bg-01.jpg');"> -->
+        <div class="container-pagecontent">
+            <div class="wrap-pagecontent p-l-55 p-r-55 p-t-65 p-b-54">
+              <div class="page-header">
+                  <h3>Account</h3>
+              </div>
+              <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+              <div class="p-t-65 p-l-35 p-r-35">
+                  <form [formGroup]="inputForm" (ngSubmit)="changeEmail(inputForm.value)" class="form-content" novalidate autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
+            
+                      <div style="text-align:right">
+                          <sup>*</sup> required
+                      </div>
+                      <div [ngClass]="{'has-error': inputForm.get('userName').invalid && inputForm.get('userName').dirty}">
+                          <div class="wrap-input100 validate-input m-b-15">
+                              <span class="label-input100">Username :</span>
+                              <input class="input100" type="text" id="userName" [formControl]="userName" placeholder="Username" disabled>
+                              <span class="focus-input100" data-symbol="&#xf206;"></span>
+                          </div>
+                      </div>
+                      <div [ngClass]="{'has-error': inputForm.get('email').invalid && inputForm.get('email').dirty}">
+                          <div class="wrap-input100 validate-input m-b-15">
+                              <span class="label-input100">Email <sup>*</sup> :</span>
+                              <input #inputEmailRef class="input100" type="text" [appDisableControl]="this.loading == true" id="email" [formControl]="email" placeholder="Email" autofocus>
+                              <span class="focus-input100" data-symbol="&#xf15a;"></span>
+                          </div>
+                          <div style="float: right; margin-top: -5px">
+                            <span *ngIf="userData?.emailVerification"> (verified)&nbsp;<i class="fa fa-check" style="color:green"></i> </span>
+                            <span *ngIf="!userData?.emailVerification"> (unverified)&nbsp;<i class="fa fa-times" style="color:red"></i></span>
+                          </div>
+     <!--                      <div style="float: right; margin-top: -5px" *ngIf="userData?.emailVerification">(verified)&nbsp;<i class="fa fa-check" style="color:green"></i></div>
+                          <div style="float: right; margin-top: -5px" *ngIf="!userData?.emailVerification">(unverified)&nbsp;<i class="fa fa-times" style="color:red"></i></div> -->
+                          <div class="text-danger input-warning" *ngIf="inputForm.get('email').dirty && inputForm.get('email').invalid">
+                              <span>Please input the correct email</span>
+                          </div>
+
+                      </div>
+                      <div style="margin-top: 10px">               
+                          <button type="submit" [disabled]="inputForm.invalid || this.loading == true" class="btn btn-primary">Update</button>
+                          <button type="reset" [disabled]="this.loading == true" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+                      </div>
+                  </form>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+{
+  "name": "baseapp",
+  "version": "1.0.0",
+  "description": "base app angular 7 framework",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint app.js"
+  },
+  "dependencies": {
+    "express": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leogurning/baseapp.git"
+  },
+  "author": "Leonard Gurning",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leogurning/baseapp/issues"
+  },
+  "homepage": "https://github.com/leogurning/baseapp#readme",
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.3"
+  }
+}

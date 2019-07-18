@@ -1,0 +1,101 @@
+<div class="container">
+<div class="limiter">
+    <!-- <div class="container-login100" style="background-image: url('images/bg-01.jpg');"> -->
+    <div class="container-login100">
+        <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
+            <form [formGroup]="loginForm" (ngSubmit)="loginUser(loginForm.value)" class="login100-form" novalidate autocomplete="off">
+                <span class="login100-form-title p-b-49">
+                    Please Sign In
+                </span>
+
+                <div class="wrap-input100 validate-input m-b-15">
+                    <span class="label-input100">Username</span>
+                    <input class="input100" type="text" id="inputUser"  [formControl]="userName" placeholder="Username" autofocus>
+                    <span class="focus-input100" data-symbol="&#xf206;"></span>
+                </div>
+                <div class="text-danger" style="margin:-10px 0 5px 0" *ngIf="loginForm.get('userName').dirty && loginForm.get('userName').invalid">
+                    Please enter username
+                </div>
+                <div class="wrap-input100 validate-input">
+                    <span class="label-input100">Password</span>
+                    <input class="input100" type="password" id="inputPassword"  [formControl]="password" placeholder="Password">
+                    <span class="focus-input100" data-symbol="&#xf190;"></span>
+                </div>
+                <div class="text-danger" *ngIf="loginForm.get('password').dirty && loginForm.get('password').invalid">
+                    Please enter password
+                </div>
+                <div class="text-right p-t-8 p-b-31">
+                    <a [routerLink]="['/forgetpassword']">
+                        Forgot password?
+                    </a>
+                </div>
+                
+                <div class="container-login100-form-btn">
+                    <div class="wrap-login100-form-btn">
+                        <div class="login100-form-bgbtn"></div>
+                        <button class="login100-form-btn" [disabled]="loginForm.invalid">
+                            Login
+                        </button>
+                    </div>
+                </div>
+
+                <!-- <div class="txt1 text-center p-t-54 p-b-20">
+                    <span>
+                        Or Sign Up Using
+                    </span>
+                </div>
+
+                <div class="flex-c-m">
+                    <a href="#" class="login100-social-item bg1">
+                        <i class="fa fa-facebook"></i>
+                    </a>
+
+                    <a href="#" class="login100-social-item bg2">
+                        <i class="fa fa-twitter"></i>
+                    </a>
+
+                    <a href="#" class="login100-social-item bg3">
+                        <i class="fa fa-google"></i>
+                    </a>
+                </div> -->
+
+                <div class="flex-col-c p-t-15">
+                    <span class="txt1 p-b-10">
+                        Not a member yet ?
+                    </span>
+
+                    <a [routerLink]="['/registercli']" class="txt2">
+                        Sign Up
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+<!-- <div class="container">
+    <div class="pagecontainer">
+    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    <form [formGroup]="loginForm" (ngSubmit)="loginUser(loginForm.value)" class="form-signin gform" novalidate autocomplete="off">
+        
+        <label for="inputUser" class="sr-only">Username</label>
+        <input type="text" id="inputUser"  [formControl]="userName" placeholder="Username" autofocus>
+        <div class="text-danger" *ngIf="loginForm.get('userName').dirty && loginForm.get('userName').invalid">
+            Please enter username
+        </div>
+
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword"  [formControl]="password" placeholder="Password">
+        <div class="text-danger" *ngIf="loginForm.get('password').dirty && loginForm.get('password').invalid">
+            Please enter password
+        </div>
+        <br><br>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="loginForm.invalid" >Sign In</button>
+        <br>
+        <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-6"><a [routerLink]="['/forgetpassword']">Forget Password  <i class="fa fa-question fa-lg"></i></a></div>
+            <div class="col-md-6 col-sm-6 col-xs-6" style="text-align: right"><a [routerLink]="['/registercli']"><i class="fa fa-user fa-lg"></i>  Register</a></div>
+        </div>
+    </form>
+    </div>
+  </div> -->
