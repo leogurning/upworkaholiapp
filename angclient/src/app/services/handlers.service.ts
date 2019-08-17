@@ -28,7 +28,7 @@ export class HandlersService {
       response.raw = httpResponse.message;
     } else if (httpResponse.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
-      console.error('An error occurred:', httpResponse.error.message);
+      // console.error('An error occurred:', httpResponse.error.message);
       response.message = 'a client side error occured';
       response.error = httpResponse.status;
       response.raw = httpResponse.error.message;
@@ -37,9 +37,10 @@ export class HandlersService {
       // The response body may contain clues as to what went wrong,
 
       if (httpResponse instanceof HttpErrorResponse) {
-        console.error(
+        /* console.error(
           `Backend returned code ${httpResponse.status}, ` +
           `body was: ${JSON.stringify(httpResponse.error)}`);
+        */
       }
         // httpResponse.message has a value like "Http failure response for http://localhost:5000/api/msconfig/date/list: 0 Unknown Error"
 
@@ -56,12 +57,10 @@ export class HandlersService {
   }
 
   handleRetry(error: Observable<any>) {
-    console.log('error');
     return error
     .pipe(scan((retryCount) => {
       retryCount += 1;
       if (retryCount < 3) {
-        console.log(`Retry Attempt: ${retryCount}`);
         return retryCount;
       } else {
         // tslint:disable-next-line: max-line-length

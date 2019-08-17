@@ -27,6 +27,8 @@ const appRoutes: Routes = [
     {path: 'logout', component: LogoutComponent, canActivate: [AuthGuard], runGuardsAndResolvers: 'always'},
     /* This is for feature module lazy loading with preload strategy */
     {path: 'user', data: { preload: true } , loadChildren: './modules/user/user.module#UserModule'},
+    {path: 'freelancer', data: { preload: true } , loadChildren: './modules/freelancer/freelancer.module#FreelancerModule'},
+    {path: 'jobs', data: { preload: true } , loadChildren: './modules/jobs/jobs.module#JobsModule'},
     {path: '**', component: PagenotfoundComponent}
   ];
 

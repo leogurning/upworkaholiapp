@@ -81,7 +81,6 @@ export class AccountComponent implements OnInit, AfterViewInit {
 
   changeEmail(formdata): void {
     if (this.inputForm.dirty && this.inputForm.valid) {
-      console.log(formdata);
       this.loading = true;
       // Get user data
       this.userService.doChangeEmail(formdata).subscribe(data => {

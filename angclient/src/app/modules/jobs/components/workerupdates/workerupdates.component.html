@@ -1,0 +1,85 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{ modalTitle }}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="cancelModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+  <form [formGroup]="inputForm" (ngSubmit)="saveMilestone(inputForm.value)" class="form-content" novalidate autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
+    <div *ngIf="disabledWorkerControl">
+      <div class="wrap-input100 validate-input m-b-15">
+        <span class="label-input100">Updates<sup>*</sup> :</span>
+        <textarea #inputWorkUpdatesRef class="input100 textarea mt-1" 
+                rows="10"
+                [appDisableControl]="this.loading || !disabledWorkerControl" 
+                id="workerUpdates" 
+                [formControl]="workerUpdates" 
+                placeholder="Updates"
+                style="height: 150px">
+        </textarea>
+        <span class="focus-input100" data-symbol=""></span>
+      </div>
+      <div class="text-danger input-warning m-t-m5 m-b-5" 
+            *ngIf="inputForm.get('workerUpdates').dirty && inputForm.get('workerUpdates').invalid">
+        <span>Please input your updates</span>
+      </div>
+    </div>
+
+    <div *ngIf="disabledClientControl">
+      <div class="wrap-input100 validate-input m-b-15">
+        <span class="label-input100">Feedback<sup>*</sup> :</span>
+        <textarea #inputClientFeedbackRef class="input100 textarea mt-1" 
+                rows="10"
+                [appDisableControl]="this.loading || !disabledClientControl" 
+                id="clientFeedback" 
+                [formControl]="clientFeedback" 
+                placeholder="Feedback"
+                style="height: 150px">
+        </textarea>
+        <span class="focus-input100" data-symbol=""></span>
+      </div>
+      <div class="text-danger input-warning m-t-m5 m-b-5" 
+            *ngIf="inputForm.get('clientFeedback').dirty && inputForm.get('clientFeedback').invalid">
+        <span>Please input your feedback</span>
+      </div>
+    </div>
+
+      <!-- Update status -->
+      <div *ngIf="disabledWorkerControl" class="wrap-input100 validate-input m-b-15">
+        <span class="label-input100">Status<sup>*</sup> :</span>     
+        <select
+            class="custom-select mt-1"
+            [appDisableControl]="this.loading || !disabledWorkerControl"
+            [formControl]="statusFromWorker">
+            <option *ngFor="let c of statusFromWorkerList" [ngValue]="c.displayValue">{{c.displayValue}}</option>
+        </select>
+        <span class="form-text text-danger" 
+            *ngIf="inputForm.get('statusFromWorker').errors?.message || (inputForm.get('statusFromWorker').dirty && inputForm.get('statusFromWorker').invalid)">
+            {{ inputForm.get('statusFromWorker').errors.message || 'Please input the correct status' }}
+        </span>
+      </div>
+
+      <!-- Update client status -->
+      <div *ngIf="disabledClientControl" class="wrap-input100 validate-input m-b-15">
+        <span class="label-input100">Status<sup>*</sup> :</span>     
+        <select
+            class="custom-select mt-1"
+            [appDisableControl]="this.loading || !disabledClientControl"
+            [formControl]="statusFromClient">
+            <option *ngFor="let c of statusFromClientList" [ngValue]="c.displayValue">{{c.displayValue}}</option>
+        </select>
+        <span class="form-text text-danger" 
+            *ngIf="inputForm.get('statusFromClient').errors?.message || (inputForm.get('statusFromClient').dirty && inputForm.get('statusFromClient').invalid)">
+            {{ inputForm.get('statusFromClient').errors.message || 'Please input the correct status' }}
+        </span>
+      </div>
+
+      <div>
+        <button type="submit" [disabled]="inputForm.invalid || this.loading" class="btn btn-primary">Save</button>
+        <button type="reset" [disabled]="this.loading == true" class="btn btn-secondary" (click)="cancelModal()">
+            Cancel
+        </button>
+      </div>
+  </form>
+</div>

@@ -1,0 +1,198 @@
+<div class="container">
+    <div *ngIf="loading" class="loading-indicator">
+        <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+      </div>
+  <div class="limiter-pagecontent">
+    <!-- <div class="container-login100" style="background-image: url('images/bg-01.jpg');"> -->
+    <div class="container-pagecontent">
+      <div class="wrap-pagecontent p-l-55 p-r-55 p-t-65 p-b-54" style="width: 1024px">
+        <div class="page-header">
+            <h3>Job Milestone</h3>
+        </div>
+        <!-- Job Details -->
+        <div class="card border-info mx-auto d-flex mt-3 mb-3" style="width: 90%;">
+            <h5 class="card-header">Job Detail</h5>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group row mb-0">
+                      <label for="title" class="col-sm-5 col-form-label">Title</label>
+                      <div class="col-sm-7">
+                        <input type="text" 
+                              readonly="" 
+                              class="form-control-plaintext" 
+                              id="title" 
+                              value="{{ jobData?.jobTitle }}">
+                      </div>
+                    </div>
+
+                    <div class="form-group row mb-0">
+                      <label for="category" class="col-sm-5 col-form-label">Category</label>
+                      <div class="col-sm-7">
+                        <input type="text" 
+                              readonly="" 
+                              class="form-control-plaintext" 
+                              id="title" 
+                              value="{{ jobData?.jobCategory }}">
+                      </div>
+                    </div>
+
+                    <div class="form-group row mb-0">
+                      <label for="jobType" class="col-sm-5 col-form-label">Type</label>
+                      <div class="col-sm-7">
+                        <input type="text" 
+                              readonly="" 
+                              class="form-control-plaintext" 
+                              id="title" 
+                              value="{{ jobData?.jobType }}">
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label for="worker" class="col-sm-5 col-form-label">Worker Name</label>
+                      <div class="col-sm-7">
+                        <input type="text" 
+                              readonly="" 
+                              class="form-control-plaintext" 
+                              id="title" 
+                              value="{{ worker?.firstName }} {{ worker?.lastName }}">
+                      </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group row mb-0">
+                      <label for="startDate" class="col-sm-5 col-form-label">Start Date</label>
+                      <div class="col-sm-7">
+                        <input type="text" 
+                              readonly="" 
+                              class="form-control-plaintext" 
+                              id="title" 
+                              value="{{ globalFunctions.dateToString(jobData?.startDate) }}">
+                      </div>
+                    </div>
+
+                    <div class="form-group row mb-0">
+                      <label for="endDate" class="col-sm-5 col-form-label">End Date</label>
+                      <div class="col-sm-7">
+                        <input type="text" 
+                              readonly="" 
+                              class="form-control-plaintext" 
+                              id="title" 
+                              value="{{ globalFunctions.dateToString(jobData?.endDate) }}">
+                      </div>
+                    </div>
+
+                    <div class="form-group row mb-0">
+                      <label for="amount" class="col-sm-5 col-form-label">Amount</label>
+                      <div class="col-sm-7">
+                        <input type="text" 
+                              readonly="" 
+                              class="form-control-plaintext" 
+                              id="title" 
+                              value="{{ jobData?.jobAmount | currency: 'IDR':'symbol-narrow' }}">
+                      </div>
+                    </div>
+                </div>
+              </div>
+              <p class="card-text">
+                Payment Term: {{ jobData?.paymentTerm }} <br>
+                <i>{{ jobData?.paymentDescription }}</i>
+              </p>
+            </div>
+        </div>
+
+        <!-- Info of the search result -->
+        <div class="card bg-transparent mb-2 border-0">
+          <div class="card-body py-0">
+            <div class="row">
+              <div class="col-md-8">
+                <h5 class="mb-xs-1 mb-sm-0 pt-1">
+                Milestones List
+                </h5>
+              </div>
+              <div class="col-md-4 text-right">
+                <button *ngIf="currentUser$.userType === 'EMPLOYER' && isAbleToAdd()" type="button" class="btn btn-sm btn-success" (click)="goToSave()"><i class="fa fa-plus"></i> Add</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Info of the search result -->
+
+        <!-- Table detail milestone -->
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" width="3%">#</th>
+                        <th scope="col" width="25%">Title</th>
+                        <th scope="col" width="10%">Expected Completion Date</th>
+                        <th scope="col" width="10%">Actual Completion Date</th>
+                        <th scope="col" width="10%">Work Status</th>
+                        <th scope="col" width="10%">Approval Status</th>
+                        <th scope="col" width="10%">Overdue</th>
+                        <th scope="col" width="22%" class="text-action">Action</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="totalrows <=0">
+                    <tr>
+                      <td colspan="8">No Milestone</td>
+                    </tr>
+                </tbody>
+                <tbody *ngIf="totalrows > 0">
+                    <tr *ngFor='let milestone of displayChunkDataArray; let mIndex = index'>
+                        <td scope="row" data-label="No">{{ mIndex + 1 + (currentPage - 1) * itemPerPage }}</td>
+                        <td data-label="Title"><a style="cursor:pointer" (click)="goToSave(milestone._id)" data-toggle="tooltip" data-placement="top" title="Edit Detail" data-original-title="Tooltip on top">{{ milestone.milestoneTitle }}</a></td>
+                        <td data-label="Expected Completion Date">{{ globalFunctions.dateToString(milestone.expectedCompletedDate) }}</td>
+                        <td data-label="Actual Completion Date">
+                          <span *ngIf="milestone.actualCompletedDate">{{ globalFunctions.dateToString(milestone.actualCompletedDate) }}</span>
+                        </td>
+                        <td data-label="Work Status">
+                          <span *ngIf="milestone.workerUpdates" tooltip="click to view worker updates" placement="bottom"><button type="button" class="{{ globalFunctions.getStatusClass(milestone.statusFromWorker) }}" (click)="goToViewWorkerUpdates(milestone._id)">{{ milestone.statusFromWorker }}</button></span>
+                          <span *ngIf="!milestone.workerUpdates"><button type="button" class="{{ globalFunctions.getStatusClass(milestone.statusFromWorker) }}">{{ milestone.statusFromWorker }}</button></span>
+                        </td>
+                        <td data-label="Approval Status">
+                          <span *ngIf="milestone.clientFeedback" tooltip="click to view client feedback" placement="bottom"><button type="button" class="{{ globalFunctions.getStatusClass(milestone.statusFromClient) }}" (click)="goToViewClientFeedback(milestone._id)">{{ milestone.statusFromClient }}</button></span>
+                          <span *ngIf="!milestone.clientFeedback"><button type="button" class="{{ globalFunctions.getStatusClass(milestone.statusFromClient) }}">{{ milestone.statusFromClient }}</button></span>
+                        </td>
+                        <td data-label="Overdue">{{ milestone.overdue }}</td>
+                        <td data-label="Action" class="text-action">
+                            <button type="button" *ngIf="currentUser$.userType === 'FREELANCER' && (milestone.statusFromClient !== milestoneStatusClient.APPROVED && milestone.statusFromClient !== milestoneStatusClient.CANCELLED)" class="btn btn-info btn-sm" aria-label="View" (click)="goToWorkerUpdates(milestone._id)" data-toggle="tooltip" data-placement="top" title="" data-original-title="View Worker Comment">
+                                Worker Updates
+                            </button>
+                            <button type="button" *ngIf="currentUser$.userType === 'FREELANCER' && milestone.statusFromClient === milestoneStatusClient.APPROVED && !milestone.transferRequest" class="btn btn-primary btn-sm" aria-label="Transfer" (click)="goToRequestForTransfer(milestone._id)" data-toggle="tooltip" data-placement="top" title="" data-original-title="Request For Transfer">
+                                Request For Transfer
+                            </button>
+                            <span *ngIf="currentUser$.userType === 'FREELANCER' && milestone.statusFromClient === milestoneStatusClient.APPROVED && milestone.transferRequest">Transfer Request Submitted</span>
+                            <button type="button" *ngIf="currentUser$.userType === 'EMPLOYER' && (milestone.statusFromClient !== milestoneStatusClient.APPROVED && milestone.statusFromClient !== milestoneStatusClient.CANCELLED)" class="btn btn-info btn-sm"  aria-label="Feedback" (click)="goToGiveFeedback(milestone._id)" data-toggle="tooltip" data-placement="top" title="" data-original-title="Give Feedback">
+                                Give Feedback
+                            </button>
+                        </td>
+                    </tr>                    
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- For pagination -->
+        <div>
+            <span *ngIf="isReadyToComplete" class="text-left">
+                <button type="button" *ngIf="currentUser$.userType === 'EMPLOYER'" class="btn btn-primary btn-sm" aria-label="Complete" (click)="goToCompleteJob()" data-toggle="tooltip" data-placement="top" title="" data-original-title="Complete Job">
+                  Complete
+              </button>
+            </span>
+          <!-- Pagination or button here -->
+          <pagination #paginateRef *ngIf="milestones.length > itemPerPage"
+              [totalItems]="milestones.length" 
+              [itemsPerPage] = "itemPerPage"
+              (pageChanged)="pageChanged($event)"
+              [maxSize]="maxSize"
+              previousText="&lsaquo;"
+              nextText="&rsaquo;">
+
+          </pagination>
+          
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,90 @@
+<div class="container">
+    <div *ngIf="loading" class="loading-indicator">
+        <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+      </div>
+  <div class="limiter-pagecontent">
+    <!-- <div class="container-login100" style="background-image: url('images/bg-01.jpg');"> -->
+    <div class="container-pagecontent">
+      <div class="wrap-pagecontent p-l-55 p-r-55 p-t-65 p-b-54">
+        <div class="page-header">
+            <h3>Search Jobs</h3>
+        </div>
+
+        <!-- Search Form to take input Search Text -->
+        <div class="card bg-white mb-2">
+            <div class="card-body col-md-8 py-1">
+                <form [formGroup]="inputForm" (ngSubmit)="searchJob(inputForm.value)" novalidate autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
+                  <div class="row">
+                    <div class="col-md-7 pb-2">
+                        <label for="searchstring">Search Text: </label>
+                        <!-- (change) will do search action when it losts focus/ or after press enter -->
+                        <!-- (input) will do search action every time the input value changes -->
+                        <div class="searchtext">
+                          <input type="text" #inputSearchTextRef [appDisableControl]="this.loading == true" [formControl]="searchText" (change)="inputChangeEvent($event)" class="form-control">
+                          <button type="submit"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+          </div>
+          <!-- Search Form to take input Search Text -->
+
+          <!-- Info of the search result -->
+          <div class="card bg-transparent mb-2 border-0">
+              <div class="card-body py-0">
+                <div class="row">
+                  <div class="col-md-8">
+                    <h5 class="mb-xs-1 mb-sm-0 pt-1">
+                      <small *ngIf="!loading && totalrows > 0" class="text-info">Result: {{ totalrows }} items</small>
+                      <small *ngIf="!loading && totalrows <= 0" class="text-info font-italic">
+                          &nbsp;  (No Data)
+                      </small>
+                    </h5>
+                  </div>
+                  <div class="col-md-4 text-right">
+                    <!-- <button type="button" class="btn btn-sm btn-success" (click)="addForecastItem()"><i class="fa fa-plus mr-1"></i> Add</button> -->
+                    <!-- Pagination or button here-->
+                    <pagination *ngIf="jobs.length > itemPerPage"
+                        [totalItems]="jobs.length" 
+                        [itemsPerPage] = "itemPerPage"
+                        (pageChanged)="pageChanged($event)"
+                        [maxSize]="maxSize"
+                        previousText="&lsaquo;"
+                        nextText="&rsaquo;">
+  
+                    </pagination>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Info of the search result -->
+
+            <!-- Lis of Job Result-->
+
+            <div *ngIf="jobs.length > 0" class="card mb-3">
+              <h3 class="card-header" style="font-size: 20px">My Feed</h3>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item" *ngFor='let job of displayChunkDataArray; let jobIndex = index'>
+                    <div class="card-body">
+                      <h5 class="card-title mb-1">{{ job.jobTitle }}</h5>
+                      <h6 class="card-subtitle text-muted">{{ job.jobType }} Project ~ {{ job.jobCategory }} ~ start: {{ globalFunctions.dateToString(job.startDate) }}</h6>
+                      <p class="card-text">{{ job.jobDescription }}</p>
+                      <p class="card-text">Skilss: {{ job.skills }}</p>
+                      <div class="row">
+                        <div class="col-md-8">
+                            <button type="button" (click)="viewJobDetails(job._id)" class="btn btn-info">View Detail</button>
+                          </div>
+                          <div *ngIf="globalFunctions.isMember(job.applicants, currentUser$.userName)" class="col-md-4 text-right">
+                            Applied &nbsp; <i class="fa fa-check fa-2x" style="color:green"></i>
+                          </div>
+                      </div>
+                    </div>
+                </li>
+              </ul>
+            </div>
+            <!-- End Lis of Job Result-->
+      </div>
+    </div>
+  </div>
+</div>

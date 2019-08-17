@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 /* common Modules */
 import { ToastrService } from './common/toastr.service';
 import { DatePipe } from '@angular/common';
+import { GlobalVariables, GlobalFunctions } from './common/variables';
 
 /* Root Modules */
 import { AppComponent } from './app.component';
@@ -38,9 +39,11 @@ import { SharedModule } from './modules/shared/shared.module';
 /* Services Modules */
 import { AuthService } from './services/auth.service';
 import { UserService } from './services/user.service';
+import { ProfileService } from './services/profile.service';
 import { AuthGuard } from './guards/auth.guard';
 import { FiletransferService } from './services/filetransfer.service';
 import { ClientsService } from './services/clients.service';
+import { FreelancerService } from './services/freelancer.service';
 
 /* Interceptors Modules */
 import { httpInterceptorProviders } from './http-interceptors/index';
@@ -83,7 +86,11 @@ import { httpInterceptorProviders } from './http-interceptors/index';
     UserService,
     FiletransferService,
     ClientsService,
-    httpInterceptorProviders
+    httpInterceptorProviders,
+    ProfileService,
+    FreelancerService,
+    GlobalVariables,
+    GlobalFunctions
   ],
   bootstrap: [AppComponent]
 })

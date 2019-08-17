@@ -1,0 +1,169 @@
+<div class="container">
+    <div *ngIf="loading" class="loading-indicator">
+        <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+      </div>
+  <div class="limiter-pagecontent">
+    <!-- <div class="container-login100" style="background-image: url('images/bg-01.jpg');"> -->
+    <div class="container-pagecontent">
+      <div class="wrap-pagecontent p-l-55 p-r-55 p-t-65 p-b-54" style="width: 1024px">
+        <div class="page-header">
+            <h3>Manage Jobs</h3>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col-md-6">
+              <div class="card border-primary mb-3" style="max-width: 50rem;">
+                <div class="card-header">Job Details</div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-8">
+                        <h4 class="card-title">{{ job?.jobTitle }}</h4>
+                    </div>
+                    <div class="col-md-4 text-right">
+                        <i class="card-title">{{ job?.status }}</i>
+                    </div>
+                  </div>
+                  
+                  <p class="card-text">{{ job?.jobDescription }}</p>
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    Start: {{ globalFunctions.dateToString(job?.startDate) }}, End: {{ globalFunctions.dateToString(job?.endDate) }}
+                  </p>
+                </div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">Project Amount: {{ job?.jobAmount | currency: 'IDR':'symbol-narrow' }}</li>
+                  <li class="list-group-item">Required Skills: {{ job?.skills }}</li>
+                  <li class="list-group-item">Location: {{ job?.employerdetails[0].city }}, {{ job?.employerdetails[0].province }}</li>
+                  <li class="list-group-item">
+                      Payment Term: {{ job?.paymentTerm }}<br>
+                      Remarks: {{ job?.paymentDescription }}
+                  </li>
+                </ul>
+                <div class="card-footer text-right">
+                    <button type="button" class="btn btn-danger">Cancel</button>
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-6">
+              <p>Applicants List</p>
+              <!-- Search Form to take input Search Text -->
+              <div class="row">
+                <div class="col-md-8 py-1">
+                  <form [formGroup]="inputForm" novalidate autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
+                    <div class="row">  
+                      <div class="col-md-10 pb-2">
+                            <!-- (change) will do search action when it losts focus/ or after press enter -->
+                            <!-- (input) will do search action every time the input value changes -->
+                            <input type="text" #inputSearchTextRef class="form-control" [appDisableControl]="this.loading == true" [formControl]="searchText" (input)="inputApplicantsChangeEvent($event)">
+                        </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="col-md-4 text-right">
+                    <span *ngIf="job?.applicants.length > 0">{{ job?.applicants.length }} applicants</span>
+                </div>
+              <!-- Search Form to take input Search Text -->
+              </div>
+              <div class="table-responsive">
+                  <table class="table">
+                      <thead>
+                          <tr>
+                              <th scope="col" width="3%">#</th>
+                              <th scope="col" width="30%">Name</th>
+                              <th scope="col" width="50%">Title</th>
+                              <th scope="col" width="20%">Action</th>
+                          </tr>
+                      </thead>
+                      <tbody *ngIf="job?.applicants.length <=0">
+                          <tr>
+                            <td colspan="4">No Applicants</td>
+                          </tr>
+                      </tbody>
+                      <tbody *ngIf="job?.applicants.length > 0">
+                          <tr *ngFor='let applicant of displayChunkApplicantsArray; let appIndex = index'>
+                              <td scope="row" data-label="No">{{ appIndex + 1 + (currentPageApplicants - 1) * itemPerPage }}</td>
+                              <td data-label="Name"><a style="cursor:pointer" (click)="viewWorker(applicant._id)" data-toggle="tooltip" data-placement="top" title="View Detail">{{ applicant.firstName }}&nbsp;{{ applicant.lastName }}</a></td>
+                              <td data-label="Title">{{ applicant.title }}</td>
+                              <td data-label="Action" class="text-action">
+                                  <button *ngIf="isOpen" type="button" class="btn btn-primary btn-sm" style="margin-right:5px" aria-label="Offer" (click)="offerJob(job._id, applicant.userName)" data-toggle="tooltip" data-placement="top" title="Offer Job">
+                                      Offer
+                                  </button>
+                              </td>
+                          </tr>
+                      </tbody>
+                  </table>
+                  <!-- For pagination -->
+                  <div>
+                      <!-- Pagination or button here -->
+                      <pagination *ngIf="applicants?.length > itemPerPage"
+                          [totalItems]="applicants?.length" 
+                          [itemsPerPage] = "itemPerPage"
+                          (pageChanged)="pageChangedApplicants($event)"
+                          [maxSize]="maxSize"
+                          previousText="&lsaquo;"
+                          nextText="&rsaquo;">
+
+                      </pagination>
+                      
+                  </div>
+              </div>
+
+            <div>
+              <p>Offered List</p>
+              <div class="table-responsive">
+                  <table class="table">
+                      <thead>
+                          <tr>
+                              <th scope="col" width="3%">#</th>
+                              <th scope="col" width="30%">Name</th>
+                              <th scope="col" width="30%">Status</th>
+                              <th scope="col" width="40%" style="text-align: center">Action</th>
+                          </tr>
+                      </thead>
+                      <tbody *ngIf="job?.offered.length <=0">
+                          <tr>
+                            <td colspan="4">No Offering yet</td>
+                          </tr>
+                      </tbody>
+                      <tbody *ngIf="job?.offered.length > 0">
+                          <tr *ngFor='let applicant of displayChunkOfferedApplicantsArray; let appIndex = index'>
+                              <td scope="row" data-label="No">{{ appIndex + 1 + (currentPageOfferedApplicants - 1) * itemPerPage }}</td>
+                              <td data-label="Name">{{ applicant.firstName }}&nbsp;{{ applicant.lastName }}</td>
+                              <td data-label="Status" tooltip="{{ applicant.remarks }}" placement="bottom">{{ applicant.offerStatus}}</td>
+                              <td data-label="Action" class="text-action">
+                                  <button *ngIf="isOpen && applicant.offerStatus === 'ACCEPTED'" type="button" class="btn btn-primary btn-sm" style="margin-right:5px" aria-label="Start" (click)="startJob(job._id, applicant.userName)" data-toggle="tooltip" data-placement="top" title="Start Job">
+                                      Start
+                                  </button>
+                                  <button *ngIf="isOpen && applicant.offerStatus !== 'REJECTED'" type="button" class="btn btn-danger btn-sm" aria-label="Cancel" (click)="cancelOffer(job._id, applicant.userName)" data-toggle="tooltip" data-placement="top" title="Cancel Offer">
+                                      Cancel
+                                  </button>
+                              </td>
+                          </tr>
+                      </tbody>
+                  </table>
+                  <!-- For pagination -->
+                  <div>
+                      <!-- Pagination or button here -->
+                      <pagination *ngIf="offeredApplicants?.length > itemPerPage"
+                          [totalItems]="offeredApplicants?.length" 
+                          [itemsPerPage] = "itemPerPage"
+                          (pageChanged)="pageChangedApplicants($event, 'offered')"
+                          [maxSize]="maxSize"
+                          previousText="&lsaquo;"
+                          nextText="&rsaquo;">
+
+                      </pagination>
+                      
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-primary" (click)="goBack()">Back</button>
+      </div>
+    </div>
+  </div>
+</div>
+  

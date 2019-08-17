@@ -1,0 +1,47 @@
+<div class="containerprofile">
+  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+  <div class="avatar-flip">
+    <img *ngIf="freelancer?.profilePhotoPath" src="{{ freelancer?.profilePhotoPath }}" height="150" width="150">
+    <img *ngIf="!freelancer?.profilePhotoPath" src="assets/images/default_profile.jpg" height="150" width="150">
+  </div>
+  <h2>{{ freelancer?.firstName }}&nbsp;{{ freelancer?.lastName }}</h2>
+  <span class="stars-container stars-{{ getRatingStars(freelancer.rating ? freelancer.rating : 0) }}">★★★★★</span>
+  <h4>{{ freelancer?.title }}</h4>
+  <h4>{{ isAvailable }}</h4>
+  <ul id="myTab" class="nav nav-tabs hidden-xs">
+    <li class="nav-item">
+      <a class="nav-link js-tabcollapse-panel-heading active" data-toggle="tab" href="#summary">Summary</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link js-tabcollapse-panel-heading" data-toggle="tab" href="#skills">Skills</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link js-tabcollapse-panel-heading" data-toggle="tab" href="#addr">Address & Contact</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link js-tabcollapse-panel-heading" data-toggle="tab" href="#lang">Languages</a>
+      </li>
+  </ul>
+  <div class="panel-group visible-xs" id="myTab-accordion"></div>
+  <div id="myTabContent" class="tab-content hidden-xs">
+      <div class="tab-pane fade active show" id="summary">
+          <p>{{ freelancer?.summary }}</p>
+      </div>
+      <div class="tab-pane fade" id="skills">
+          <p>{{ freelancer?.skills }}</p>
+      </div>
+      <div class="tab-pane fade" id="addr">
+        <p>{{ freelancer?.address1 }}&nbsp;
+          {{ freelancer?.address2 }}<br>
+          {{ freelancer?.city }}<br>
+          {{ freelancer?.province }}<br>
+          {{ freelancer?.country }}<br>
+          {{ freelancer?.contactNo }}
+        </p>
+      </div>
+      <div class="tab-pane fade" id="lang">
+          <p>{{ freelancer?.languages }}</p>
+      </div>
+    </div>
+</div>
+

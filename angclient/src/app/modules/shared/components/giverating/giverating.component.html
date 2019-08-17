@@ -1,0 +1,19 @@
+<div class="modal-header" style="text-align: center; background-color:#09273a;color:#fffefe">
+  <h4 class="col-12 modal-title text-center">{{ title }}
+    <button type="button" class="close pull-right" aria-label="Close" (click)="decline()">
+      <span aria-hidden="true" style="color:#fffefe">&times;</span>
+    </button>
+  </h4>
+</div>
+<div class="modal-body text-center">
+  <div>{{ data.message }}</div>
+  <div class="ratingposition">
+    <app-rating class="text-center" [rating]='0' [itemId]='data.id' (ratingClick)='ratingComponentClick($event)'></app-rating>
+  </div>
+  <hr>
+  <div>
+    <!-- Search Form to take input Search Text -->
+    <button type="submit" class="btn btn-default" (click)="confirm()">Confirm</button>
+    <button type="button" class="btn btn-primary" (click)="decline()">Cancel</button>
+  </div>
+</div>

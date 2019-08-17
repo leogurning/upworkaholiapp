@@ -1,5 +1,5 @@
 <!-- Fixed navbar -->
-<div id="wrap" *ngIf="!this.qhashid || this.qhashid === ''">
+<div id="wrap" *ngIf="globalVariables.showNavbar && (!this.qhashid || this.qhashid === '')">
       <header>   
           <div class="inner relative">
               <a *ngIf="!authService.isLoggedIn()" class="logo" href="#"><img src="assets/images/geneius-awwwards-logos1.png" alt="geneius"></a>
@@ -11,22 +11,49 @@
                     <li *ngIf="authService.isLoggedIn()">
                         <a style="cursor:pointer;float:center;color:#f2f4df" routerLink="dashboard" routerLinkActive="active"><i class="fa fa-home fa-lg"></i></a>
                     </li>
+                    <!-- Menu for FREELANCER -->
                     <li class="parent" *ngIf="authService.isLoggedIn() && authService.currentUserValue.userType == 'FREELANCER'">
-                        <a routerLink="clientmgt" routerLinkActive="active">Client Management</a>
+                        <a routerLink="jobs/search" routerLinkActive="active">Job</a>
                             <ul class="sub-menu">
-                                <li><a routerLink="clientmgt/clients" routerLinkActive="active">Clients</a></li>
-                                <li><a routerLink="clientmgt/pendingusercli" routerLinkActive="active">Pending User</a></li>
+                                <li><a routerLink="jobs/search" routerLinkActive="active">Search</a></li>
+                                <li><a routerLink="jobs/offer" routerLinkActive="active">Offer</a></li>
+                                <li><a routerLink="jobs/ongoing" routerLinkActive="active">Ongoing</a></li>
+                                <li><a routerLink="jobs/completed" routerLinkActive="active">Completed</a></li>
                             </ul>
-                    </li>                    
+                    </li>
+                    <!-- Menu for FREELANCER -->
+
+                    <!-- Menu for EMPLOYER -->
+                    <li class="parent" *ngIf="authService.isLoggedIn() && authService.currentUserValue.userType == 'EMPLOYER'">
+                        <a routerLink="freelancer" routerLinkActive="active">Freelancer</a>
+                            <!-- <ul class="sub-menu">
+                                <li><a routerLink="freelancer/xxxx" routerLinkActive="active">XXXX</a></li>
+                                <li><a routerLink="freelancer/yyyy" routerLinkActive="active">YYYY</a></li>
+                            </ul> -->
+                    </li>
+                    <li class="parent" *ngIf="authService.isLoggedIn() && authService.currentUserValue.userType == 'EMPLOYER'">
+                        <a routerLink="jobs" routerLinkActive="active">Jobs</a>
+                            <ul class="sub-menu">
+                                <li><a routerLink="jobs/ongoing" routerLinkActive="active">Ongoing</a></li>
+                                <li><a routerLink="jobs/completed" routerLinkActive="active">Completed</a></li>
+                            </ul>
+                    </li>
+                    <!-- Menu for EMPLOYER -->
+
+                    <!-- Menu for PROFILE ACCOUNT ALL type -->
                     <li class="current-menu-item" *ngIf="!authService.isLoggedIn() && this.qhashid === ''"><a routerLink="login" routerLinkActive="active"><i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i>  Login / Register</a></li>
                     <li class="parent" *ngIf="authService.isLoggedIn()">
                         <a routerLink="user" routerLinkActive="active">Hi, {{ authService.currentUserValue?.userName }}  <i class="fa fa-user"></i></a>
                             <ul class="sub-menu">
                                 <li><a routerLink="user" routerLinkActive="active">My Account</a></li>
+                                <li *ngIf="currentUser$.userType === 'FREELANCER'"><a routerLink="user/profile" routerLinkActive="active">Profile</a></li>
+                                <li *ngIf="currentUser$.userType === 'EMPLOYER'"><a routerLink="user/employerprofile" routerLinkActive="active">Profile</a></li>
                                 <li><a routerLink="user/password" routerLinkActive="active">Change Password</a></li>
                                 <li><a routerLink="logout" routerLinkActive="active">Logout</a></li>
                             </ul>
                     </li>
+                    <!-- Menu for PROFILE ALL type -->
+
                   </ul>
               </nav>
               <div class="clear"></div>

@@ -25,6 +25,9 @@
       "dom"
     ],
     "module": "es2015",
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "paths": {
+      "@app/*": ["src/app/*"]
+    }    
   }
 }

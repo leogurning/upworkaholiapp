@@ -1,0 +1,115 @@
+<div class="container">
+    <div *ngIf="loading" class="loading-indicator">
+        <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+      </div>
+  <div class="limiter-pagecontent">
+    <!-- <div class="container-login100" style="background-image: url('images/bg-01.jpg');"> -->
+    <div class="container-pagecontent">
+      <div class="wrap-pagecontent p-l-55 p-r-55 p-t-65 p-b-54">
+        <div class="page-header">
+            <h3>Jobs</h3>
+        </div>
+
+        <!-- Search Form to take input Search Text -->
+        <div class="card bg-white mb-2">
+            <div class="card-body col-md-8 py-1">
+                <form [formGroup]="inputForm" (ngSubmit)="searchJob(inputForm.value)" novalidate autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
+                  <div class="row">
+                    <div class="col-md-7 pb-2">
+                        <label for="searchstring">Search Text: </label>
+                        <!-- (change) will do search action when it losts focus/ or after press enter -->
+                        <!-- (input) will do search action every time the input value changes -->
+                        <div class="searchtext">
+                          <input type="text" #inputSearchTextRef [appDisableControl]="this.loading == true" [formControl]="searchText" (change)="inputChangeEvent($event)" class="form-control">
+                          <button type="submit"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+          </div>
+          <!-- Search Form to take input Search Text -->
+
+          <!-- Info of the search result -->
+          <div class="card bg-transparent mb-2 border-0">
+            <div class="card-body py-0">
+              <div class="row">
+                <div class="col-md-8">
+                  <h5 class="mb-xs-1 mb-sm-0 pt-1">
+                    <small *ngIf="!loading && totalrows > 0" class="text-info">Result: {{ totalrows }} items</small>
+                    <small *ngIf="!loading && totalrows <= 0" class="text-info font-italic">
+                        &nbsp;  (No Data)
+                    </small>
+                  </h5>
+                </div>
+                <div class="col-md-4 text-right">
+                  <button type="button" class="btn btn-sm btn-success" (click)="addJob()"><i class="fa fa-plus"></i> Add</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Info of the search result -->
+
+          <div *ngIf="totalrows > 0" class="table-responsive">
+              <table class="table">
+                  <thead>
+                      <tr>
+                          <th scope="col" width="3%">#</th>
+                          <th scope="col" width="15%">Title</th>
+                          <th scope="col" width="10%">Category</th>
+                          <th scope="col" width="30%">Skills</th>
+                          <th scope="col" width="30%">Period</th>
+                          <th scope="col" width="7%">Status</th>
+                          <th scope="col" width="5%">Action</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr *ngFor='let job of displayChunkDataArray; let jobIndex = index'>
+                          <td scope="row" data-label="No">{{ jobIndex + 1 + (currentPage - 1) * itemPerPage }}</td>
+                          <td data-label="Title"><a style="cursor:pointer" (click)="editJob(job._id)" data-toggle="tooltip" data-placement="top" title="Edit Detail" data-original-title="Tooltip on top">{{ job.jobTitle }}</a></td>
+                          <td data-label="Category">{{ job.jobCategory }}</td>
+                          <td data-label="Skills">{{ job.skills }}</td>
+                          <td data-label="Period">{{ dateToString(job.startDate) }} - {{ dateToString(job.endDate) }}</td>
+                          <td data-label="Status">{{ job.status }}</td>
+                          <td data-label="Action" class="text-action">
+                              <button type="button" class="btn btn-info btn-sm" style="margin-right:5px" aria-label="Manage" (click)="goToManageJob(job._id)" data-toggle="tooltip" data-placement="top" title="Manage" data-original-title="Tooltip on top">
+                                  <span><i class="fa fa-edit"></i></span>
+                              </button>
+                          </td>
+                      </tr>
+                      <!-- <tr *ngFor='let cli of clients; let cliIndex = index'>
+                          <td scope="row" data-label="No">{{ ((qpage - 1) * 10) + (cliIndex + 1) }}</td>
+                          <td data-label="Name">{{ cli.client_name }}</td>
+                          <td data-label="Area">{{ cli.district_name + ' / '+ cli.city_name + ' / '+ cli.province_name }}</td>
+                          <td data-label="Status">{{ cli.status}}</td>
+                          <td data-label="Action" class="text-action">
+                              <button type="button" class="btn btn-info btn-sm" style="margin-right:5px" aria-label="Edit" (click)="goToedit(cli.client_id)" data-toggle="tooltip" data-placement="top" title="Change Client Data">
+                                  <span><i class="fa fa-edit"></i></span>
+                              </button>
+                              <button type="button" class="btn btn-info btn-sm" aria-label="Delete" (click)="confirmDel(cli.client_id, cli.client_name)" data-toggle="tooltip" data-placement="top" title="Delete Client Data">
+                                  <span><i class="fa fa-trash-o"></i> </span>
+                              </button>
+                          </td>
+                      </tr> -->
+                      
+                  </tbody>
+              </table>
+          </div>
+          <!-- For pagination -->
+          <div>
+              <!-- Pagination or button here -->
+              <pagination *ngIf="jobs.length > itemPerPage"
+                  [totalItems]="jobs.length" 
+                  [itemsPerPage] = "itemPerPage"
+                  (pageChanged)="pageChanged($event)"
+                  [maxSize]="maxSize"
+                  previousText="&lsaquo;"
+                  nextText="&rsaquo;">
+
+              </pagination>
+              
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

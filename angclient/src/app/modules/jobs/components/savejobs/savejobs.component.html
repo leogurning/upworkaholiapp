@@ -1,0 +1,194 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{ modalTitle }}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="cancelModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+  <form [formGroup]="inputForm" (ngSubmit)="saveJob(inputForm.value)" class="form-content" novalidate autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
+
+      <div class="wrap-input100 validate-input m-b-15">
+        <span class="label-input100">Title<sup>*</sup> :</span>
+        <input #inputTitleRef class="input100" 
+              type="text" 
+              [appDisableControl]="this.loading || disabledControl" 
+              id="jobTitle" 
+              [formControl]="jobTitle" 
+              placeholder="Job title">
+        <span class="focus-input100" data-symbol=""></span>
+      </div>
+      
+      <div class="text-danger input-warning m-t-m10 m-b-5" 
+            *ngIf="inputForm.get('jobTitle').dirty && inputForm.get('jobTitle').invalid">
+        <span>Please input the correct Job title</span>
+      </div>
+
+      <!-- 4th row: Start Date and End Date -->
+      <div class="form-row">
+        <div class="form-group col-md-6">
+            <div class="wrap-input100 validate-input m-b-15">
+              <span class="label-input100">Start Date<sup>*</sup> : (DD/MM/YYYY)</span>  
+              <input #inputStartDateRef readonly type="text"
+                  class="input100"
+                  [ngClass]="{'is-invalid': inputForm.get('startDate').dirty && inputForm.get('startDate').invalid }"
+                  bsDatepicker [bsConfig]="this.datePickerConfig"
+                  (bsValueChange)="dateInputChange($event, 'first')"
+                  [appDisableControl]="this.loading || disabledControl"
+                  [formControl]="startDate"
+                  placeholder="Start Date">
+            </div>
+            <span class="form-text text-danger" 
+                *ngIf="inputForm.get('startDate').errors?.message || (inputForm.get('startDate').dirty && inputForm.get('startDate').invalid)">
+              {{ inputForm.get('startDate').errors?.message || 'Please input the correct Date' }}
+            </span>          
+        </div>
+        <div class="form-group col-md-6">
+            <div class="wrap-input100 validate-input m-b-15">
+              <span class="label-input100">End Date<sup>*</sup> : (DD/MM/YYYY)</span>  
+              <input #inputEndDateRef readonly type="text"
+                  class="input100"
+                  [ngClass]="{'is-invalid': inputForm.get('endDate').dirty && inputForm.get('endDate').invalid }"
+                  bsDatepicker [bsConfig]="this.datePickerConfig"
+                  (bsValueChange)="dateInputChange($event, 'last')"
+                  [appDisableControl]="this.loading || disabledControl"
+                  [formControl]="endDate"
+                  placeholder="End Date">
+            </div>
+            <span class="form-text text-danger" *ngIf="this.dateValidationCode === '500'">
+                End Date must be same or greater than Start Date
+            </span>
+            <span class="form-text text-danger" 
+                *ngIf="inputForm.get('endDate').errors?.message || (inputForm.get('endDate').dirty && inputForm.get('endDate').invalid)">
+              {{ inputForm.get('endDate').errors?.message || 'Please input the correct Date' }}
+            </span>          
+        </div>
+      </div>
+
+      <div class="wrap-input100 validate-input m-b-15">
+          <span class="label-input100">Amount<sup>*</sup> :</span>
+          <input #inputTitleRef class="input100" 
+                type="number"
+                [appDisableControl]="this.loading || disabledControl" 
+                id="jobAmount" 
+                [formControl]="jobAmount" 
+                placeholder="Job Amount">
+          <span class="focus-input100" data-symbol=""></span>
+                
+        <div class="text-danger input-warning m-t-m10 m-b-5" 
+              *ngIf="inputForm.get('jobAmount').dirty && inputForm.get('jobAmount').invalid">
+          <span>Please input the correct Job Amount</span>
+        </div>
+        <div class="text-danger m-t-m10 m-b-5" *ngIf="inputForm.get('jobAmount').errors">
+            <span *ngIf="inputForm.get('jobAmount').errors.pattern">
+                Please enter a valid amount
+            </span>
+        </div>
+      </div>
+
+      <div class="wrap-input100 validate-input m-b-15">
+        <span class="label-input100">Description<sup>*</sup> :</span>
+        <textarea class="input100 textarea mt-1" 
+                rows="10"
+                [appDisableControl]="this.loading || disabledControl" 
+                id="jobDescription" 
+                [formControl]="jobDescription" 
+                placeholder="Job description"
+                style="height: 150px">
+        </textarea>
+        <span class="focus-input100" data-symbol=""></span>
+      </div>
+      <div class="text-danger input-warning m-t-m5 m-b-5" 
+            *ngIf="inputForm.get('jobDescription').dirty && inputForm.get('jobDescription').invalid">
+        <span>Please input the Job description</span>
+      </div>
+      
+      
+      <!-- Category -->
+      <div class="wrap-input100 validate-input m-b-15">
+        <span class="label-input100">Category<sup>*</sup> :</span>     
+        <select #inputCategoryRef
+            class="custom-select mt-1"
+            [appDisableControl]="this.loading || disabledControl"
+            [formControl]="jobCategory">
+            <option *ngFor="let c of jobCategoryList" [ngValue]="c.displayValue">{{c.displayValue}}</option>
+        </select>
+        <span class="form-text text-danger" 
+            *ngIf="inputForm.get('jobCategory').errors?.message || (inputForm.get('jobCategory').dirty && inputForm.get('jobCategory').invalid)">
+            {{ inputForm.get('jobCategory').errors.message || 'Please input the correct category' }}
+        </span>
+      </div>
+
+      <!-- Type -->
+      <div class="wrap-input100 validate-input m-b-15">
+        <span class="label-input100">Type<sup>*</sup> :</span>     
+        <select #inputTypeRef
+            class="custom-select mt-1"
+            [appDisableControl]="this.loading || disabledControl"
+            [formControl]="jobType">
+            <option *ngFor="let c of projectTypeList" [ngValue]="c.displayValue">{{c.displayValue}}</option>
+        </select>
+        <span class="form-text text-danger" 
+            *ngIf="inputForm.get('jobType').errors?.message || (inputForm.get('jobType').dirty && inputForm.get('jobType').invalid)">
+            {{ inputForm.get('jobType').errors.message || 'Please input the correct type' }}
+        </span>
+      </div>
+
+      <div class="wrap-input100 validate-input m-b-15">
+        <span class="label-input100">Skills<sup>*</sup> :</span>
+        <textarea class="input100 textarea mt-1" 
+                rows="5"
+                [appDisableControl]="this.loading || disabledControl" 
+                id="skills" 
+                [formControl]="skills" 
+                placeholder="Your Skills, e.g: SCADA, etc..."
+                style="height: 100px">
+        </textarea>
+        <span class="focus-input100" data-symbol=""></span>
+        <div class="text-danger input-warning m-t-m5 m-b-5" 
+              *ngIf="inputForm.get('skills').dirty && inputForm.get('skills').invalid">
+          <span>Please input required Skills</span>
+        </div>
+      </div>
+
+      <!-- Payment Terms -->
+      <div class="wrap-input100 validate-input m-b-15">
+        <span class="label-input100">Payment Term<sup>*</sup> :</span>     
+        <select
+            class="custom-select mt-1"
+            [appDisableControl]="this.loading || disabledControl"
+            [formControl]="paymentTerm">
+            <option *ngFor="let c of paymentTermList" [ngValue]="c.displayValue">{{c.displayValue}}</option>
+        </select>
+        <span class="form-text text-danger" 
+            *ngIf="inputForm.get('paymentTerm').errors?.message || (inputForm.get('paymentTerm').dirty && inputForm.get('paymentTerm').invalid)">
+            {{ inputForm.get('paymentTerm').errors.message || 'Please input the correct term' }}
+        </span>
+      </div>
+
+      <div class="wrap-input100 validate-input m-b-15">
+        <span class="label-input100">Payment Description<sup>*</sup> :</span>
+        <textarea class="input100 textarea mt-1" 
+                rows="5"
+                [appDisableControl]="this.loading || disabledControl" 
+                id="skills" 
+                [formControl]="paymentDescription" 
+                placeholder="Payment Term Description"
+                style="height: 100px">
+        </textarea>
+        <span class="focus-input100" data-symbol=""></span>
+        <div class="text-danger input-warning m-t-m5 m-b-5" 
+              *ngIf="inputForm.get('paymentDescription').dirty && inputForm.get('paymentDescription').invalid">
+          <span>Please input payment description</span>
+        </div>
+      </div>
+
+      <div>
+        <button type="submit" *ngIf="data.type !== 'view'" [disabled]="inputForm.invalid || this.loading" class="btn btn-primary">Save</button>
+        <button type="reset" [disabled]="this.loading == true" class="btn btn-secondary" (click)="cancelModal()">
+          <span *ngIf="data.type !== 'view'">Cancel</span>
+          <span *ngIf="data.type === 'view'">Close</span>
+        </button>
+      </div>
+  </form>
+</div>

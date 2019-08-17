@@ -1,7 +1,7 @@
 {
-  "name": "baseapp",
+  "name": "upworkaholiapp",
   "version": "1.0.0",
-  "description": "base app angular 7 framework",
+  "description": "upworkaholi app angular 7 framework",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/leogurning/baseapp.git"
+    "url": "git+https://github.com/leogurning/upworkaholiapp.git"
   },
   "author": "Leonard Gurning",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/leogurning/baseapp/issues"
+    "url": "https://github.com/leogurning/upworkaholiapp/issues"
   },
-  "homepage": "https://github.com/leogurning/baseapp#readme",
+  "homepage": "https://github.com/leogurning/upworkaholiapp#readme",
   "devDependencies": {
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",

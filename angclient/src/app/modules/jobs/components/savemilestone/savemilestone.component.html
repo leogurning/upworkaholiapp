@@ -1,0 +1,92 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{ modalTitle }}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="cancelModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+
+  <form [formGroup]="inputForm" (ngSubmit)="saveMilestone(inputForm.value)" class="form-content" novalidate autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
+    <div class="wrap-input100 validate-input m-b-15">
+      <span class="label-input100">Title<sup>*</sup> :</span>
+      <input #inputTitleRef class="input100" 
+            type="text" 
+            [appDisableControl]="this.loading || disabledControl" 
+            id="milestoneTitle" 
+            [formControl]="milestoneTitle" 
+            placeholder="Milestone title">
+      <span class="focus-input100" data-symbol=""></span>
+    </div>
+    
+    <div class="text-danger input-warning m-t-m10 m-b-5" 
+          *ngIf="inputForm.get('milestoneTitle').dirty && inputForm.get('milestoneTitle').invalid">
+      <span>Please input the correct Milestone title</span>
+    </div>
+
+    <div class="form-row">
+      <span class="label-input100">Expected Completion Date<sup>*</sup> : (DD/MM/YYYY)</span>  
+      <div class="form-group col-md-6">
+          <div class="wrap-input100 validate-input m-b-15">      
+            <input #inputExpectedCDateRef readonly type="text"
+                class="input100"
+                [ngClass]="{'is-invalid': inputForm.get('expectedCompletedDate').dirty && inputForm.get('expectedCompletedDate').invalid }"
+                bsDatepicker [bsConfig]="this.datePickerConfig"
+                [appDisableControl]="this.loading || disabledControl"
+                [formControl]="expectedCompletedDate"
+                placeholder="Completion Date">
+          </div>
+          <span class="form-text text-danger" 
+              *ngIf="inputForm.get('expectedCompletedDate').errors?.message || (inputForm.get('expectedCompletedDate').dirty && inputForm.get('expectedCompletedDate').invalid)">
+            {{ inputForm.get('expectedCompletedDate').errors?.message || 'Please input the correct Date' }}
+          </span>          
+      </div>
+    </div>
+
+    <div class="wrap-input100 validate-input m-b-15">
+      <span class="label-input100">Description<sup>*</sup> :</span>
+      <textarea class="input100 textarea mt-1" 
+              rows="10"
+              [appDisableControl]="this.loading || disabledControl" 
+              id="milestoneDescription" 
+              [formControl]="milestoneDescription" 
+              placeholder="Milestone description"
+              style="height: 150px">
+      </textarea>
+      <span class="focus-input100" data-symbol=""></span>
+    </div>
+    <div class="text-danger input-warning m-t-m5 m-b-5" 
+          *ngIf="inputForm.get('milestoneDescription').dirty && inputForm.get('milestoneDescription').invalid">
+      <span>Please input the Milestone description</span>
+    </div>
+
+    <div class="wrap-input100 validate-input m-b-15">
+          <span class="label-input100">Amount<sup>*</sup> :</span>
+          <input #inputTitleRef class="input100" 
+                type="number"
+                [appDisableControl]="this.loading || disabledControl" 
+                id="milestoneAmount" 
+                [formControl]="milestoneAmount" 
+                placeholder="Milestone Amount">
+          <span class="focus-input100" data-symbol=""></span>
+                
+        <div class="text-danger input-warning m-t-m10 m-b-5" 
+              *ngIf="inputForm.get('milestoneAmount').dirty && inputForm.get('milestoneAmount').invalid">
+          <span>Please input the correct Milestone Amount</span>
+        </div>
+        <div class="text-danger m-t-m10 m-b-5" *ngIf="inputForm.get('milestoneAmount').errors">
+            <span *ngIf="inputForm.get('milestoneAmount').errors.pattern">
+                Please enter a valid amount
+            </span>
+        </div>
+      </div>
+
+      <div>
+        <button type="submit" *ngIf="data.type !== 'view'" [disabled]="inputForm.invalid || this.loading" class="btn btn-primary">Save</button>
+        <button type="reset" [disabled]="this.loading == true" class="btn btn-secondary" (click)="cancelModal()">
+            <span *ngIf="data.type !== 'view'">Cancel</span>
+            <span *ngIf="data.type === 'view'">Close</span>
+        </button>
+      </div>
+  </form>
+</div>

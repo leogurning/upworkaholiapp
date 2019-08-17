@@ -1,0 +1,106 @@
+<div class="container">
+    <div *ngIf="loading" class="loading-indicator">
+        <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+      </div>
+  <div class="limiter-pagecontent">
+    <!-- <div class="container-login100" style="background-image: url('images/bg-01.jpg');"> -->
+    <div class="container-pagecontent">
+      <div class="wrap-pagecontent p-l-55 p-r-55 p-t-65 p-b-54">
+        <div class="page-header">
+            <h3>Completed Jobs</h3>
+        </div>
+
+        <!-- Search Form to take input Search Text -->
+        <div class="card bg-white mb-2">
+          <div class="card-body col-md-8 py-1">
+              <form [formGroup]="inputForm" (ngSubmit)="searchJob(inputForm.value)" novalidate autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
+                <div class="row">
+                  <div class="col-md-7 pb-2">
+                      <label for="searchstring">Search Text: </label>
+                      <!-- (change) will do search action when it losts focus/ or after press enter -->
+                      <!-- (input) will do search action every time the input value changes -->
+                      <div class="searchtext">
+                        <input type="text" #inputSearchTextRef [appDisableControl]="this.loading == true" [formControl]="searchText" (change)="inputChangeEvent($event)" class="form-control">
+                        <button type="submit"><i class="fa fa-search"></i></button>
+                      </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+        </div>
+        <!-- Search Form to take input Search Text -->
+
+        <!-- Info of the search result -->
+        <div class="card bg-transparent mb-2 border-0">
+          <div class="card-body py-0">
+            <div class="row">
+              <div class="col-md-8">
+                <h5 class="mb-xs-1 mb-sm-0 pt-1">
+                  <small *ngIf="!loading && totalrows > 0" class="text-info">Result: {{ totalrows }} items</small>
+                  <small *ngIf="!loading && totalrows <= 0" class="text-info font-italic">
+                      &nbsp;  (No Data)
+                  </small>
+                </h5>
+              </div>
+              <div class="col-md-4 text-right">
+                <!-- <button type="button" class="btn btn-sm btn-success" (click)="addJob()"><i class="fa fa-plus"></i> Add</button> -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Info of the search result -->
+
+        <div *ngIf="totalrows > 0" class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" width="3%">#</th>
+                        <th scope="col" width="35%">Title</th>
+                        <th scope="col" width="15%">Completed</th>
+                        <th scope="col" width="30%">
+                          <span *ngIf="currentUser$.userType === 'FREELANCER'">Client</span>
+                          <span *ngIf="currentUser$.userType === 'EMPLOYER'">Worker</span>
+                        </th>
+                        <th scope="col" width="10%">
+                          <span *ngIf="currentUser$.userType === 'FREELANCER'">Worker Rating</span>
+                          <span *ngIf="currentUser$.userType === 'EMPLOYER'">Client Rating</span>                          
+                        </th>
+                        <th scope="col" width="5%">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor='let job of displayChunkDataArray; let jobIndex = index'>
+                        <td scope="row" data-label="No">{{ jobIndex + 1 + (currentPage - 1) * itemPerPage }}</td>
+                        <td data-label="Title"><a style="cursor:pointer" (click)="viewJob(job._id)" data-toggle="tooltip" data-placement="top" title="" data-original-title="Detail">{{ job.jobTitle }}</a></td>
+                        <td data-label="Completed Date">{{ globalFunctions.dateToString(job.endDate) }}</td>
+                        <td *ngIf="currentUser$.userType === 'FREELANCER'" data-label="Client">{{ job.employerdetails[0].companyName }}</td>
+                        <td *ngIf="currentUser$.userType === 'EMPLOYER'" data-label="Worker">{{ job.freelancerdetails[0].firstName }}&nbsp;{{ job.freelancerdetails[0].lastName }}</td>
+                        <td *ngIf="currentUser$.userType === 'FREELANCER'" data-label="Worker Rating" class="stars-container stars-{{ getRatingStars(job.workerRating) }}">★★★★★</td>
+                        <td *ngIf="currentUser$.userType === 'EMPLOYER'" data-label="Client Rating" class="stars-container stars-{{ getRatingStars(job.clientRating) }}">★★★★★</td>
+                        <td data-label="Action" class="text-action">
+                            <button type="button" class="btn btn-info btn-sm" style="margin-right:5px" aria-label="Milestone" (click)="goToMilestoneJob(job._id)" data-toggle="tooltip" data-placement="top" title="Milestone" data-original-title="Tooltip on top">
+                               Milestone
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div>
+            <!-- Pagination or button here -->
+            <pagination *ngIf="jobs.length > itemPerPage"
+                [totalItems]="jobs.length" 
+                [itemsPerPage] = "itemPerPage"
+                (pageChanged)="pageChanged($event)"
+                [maxSize]="maxSize"
+                previousText="&lsaquo;"
+                nextText="&rsaquo;">
+
+            </pagination>
+            
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

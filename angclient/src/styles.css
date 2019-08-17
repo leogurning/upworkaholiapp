@@ -38,7 +38,7 @@ html {
 body {
 	background-color: #eee;
   color: #666;
-	/* font-family: 'Lato', sans-serif; */
+	font-family: 'Lato', sans-serif;
 	font-size: 13px;
 	padding:0px;
 	margin-bottom: 60px;
@@ -47,7 +47,7 @@ body {
 html, body {
     width: 100%;
     overflow-x: hidden;
-    font-family: Poppins-Regular, sans-serif;
+    /* font-family: Poppins-Regular, sans-serif; */
  }
 
  .pagecontainer {
@@ -137,9 +137,9 @@ html, body {
   .gform textarea:focus,
   .gform select:focus
   {
-      box-shadow: 1px 1px 8px #ffbaeb;
+      box-shadow: 1px 1px 8px #FFF9C4;
       padding: 1%;
-      border: 3px solid #ffbaeb;
+      border: 3px solid #FFF9C4;
   }
 
   .form-ele{
@@ -281,7 +281,7 @@ html, body {
   }
 
   .table > thead > tr > th > a:hover {
-    color: #ffbaeb !important;
+    color: #FFF9C4 !important;
   }
 
   .table > tbody > tr > td {
@@ -291,7 +291,7 @@ html, body {
   }
 
   .table > tbody > tr:hover > td {
-    background-color: #f6e6ff;
+    background-color: #FFF9C4;
   }
 
 .text-action {
@@ -330,6 +330,20 @@ html, body {
     top: 55px;
     right: 2%;
   }
+
+  /* loading indicator area Css */
+  .loading-indicator {
+    display: block;
+    width: 90%;
+    height: 100%;
+    left: 5%;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.1);
+    cursor: wait;
+    z-index: 99999;
+    pointer-events: all;
+  }
+
   /* Spinner Css */
   .lds-dual-ring {
     display: block;
@@ -373,6 +387,123 @@ html, body {
     z-index: 99999;
     pointer-events: all;
   }
+
+  .info-centered {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .info-centered.h100 {
+      height: 100vh;
+      width: 100%;
+  }
+
+  iframe {
+      overflow:hidden!;
+  }
+
+  .sizer {
+      width: 1200px;
+      height: 800px;
+  }
+  .lh1 {
+    line-height: 1em;
+  }
+
+  .lh1p5 {
+      line-height: 1.5em;
+  }
+
+.nav-item > .nav-link {
+  color:#666;
+  font-size: 12px !important;
+}
+
+.nav-item > .nav-link.active  {
+  color: #00baff !important;
+}
+
+.nav-tabs {
+  border-bottom: 1px solid rgb(228, 226, 226);
+}
+
+.card-body a {
+  outline: none !important;
+  color: #1483c7;
+  cursor: pointer;
+}
+
+.card-body a:hover {
+  color: #09273a;
+}
+
+.stars-container {
+  position: relative;
+  display: inline-block;
+  color: transparent;
+  font-size: 17px;
+  /* min-height: 40px; */
+ }
+
+.stars-container:before{
+  position: absolute;
+  top: 5%;
+  left: 0;
+  content: '★★★★★';
+  color:lightgray;
+}
+
+.stars-container:after {
+  position: absolute;
+  top: 5%;
+  left: 0;
+  content: '★★★★★';
+  color: rgb(255, 81, 0);
+  overflow: hidden;
+  height: 22px;
+}
+
+.stars-0:after { width: 0%; }
+.stars-10:after { width: 10%; }
+.stars-20:after { width: 20%; }
+.stars-30:after { width: 30%; }
+.stars-40:after { width: 40%; }
+.stars-50:after { width: 50%; }
+.stars-60:after { width: 60%; }
+.stars-70:after { width: 70%; }
+.stars-80:after { width: 80%; }
+.stars-90:after { width: 90%; }
+.stars-100:after { width: 100%;}
+
+.searchtext input[type=text] {
+  float: left;
+  width: 80%;
+  margin-right: 5px;
+}
+
+/* Style the submit button */
+.searchtext button {
+    float: left;
+    width: 15%;
+    padding: 3px;
+    font-size: 20px;
+    border-radius: 2px;
+    /* border: 1px solid grey; */
+    border-left: none; /* Prevent double borders */
+    cursor: pointer;
+}
+
+.searchtext button:hover {
+    background: #bfc0c0;
+  }
+  
+/* Clear floats */
+.searchtext::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
   @media screen and (max-width: 800px) {
     
   
