@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  mainApiHostUrl: 'https://upworkaholiapi.herokuapp.com/',
+  profileUploadpath: 'gurney/images/profiles'
 };
