@@ -13,14 +13,14 @@
         <div class="row mt-3">
           <div class="col-md-6">
               <div class="card border-primary mb-3" style="max-width: 50rem;">
-                <div class="card-header">Job Details</div>
+                <h5 class="card-header">Job Details</h5>
                 <div class="card-body">
                   <div class="row">
                     <div class="col-md-8">
                         <h4 class="card-title">{{ job?.jobTitle }}</h4>
                     </div>
                     <div class="col-md-4 text-right">
-                        <i class="card-title">{{ job?.status }}</i>
+                        <i class="card-title" tooltip="{{ job?.cancelReason }}" placement="bottom">{{ job?.status }}</i>
                     </div>
                   </div>
                   
@@ -41,7 +41,7 @@
                   </li>
                 </ul>
                 <div class="card-footer text-right">
-                    <button type="button" class="btn btn-danger">Cancel</button>
+                    <button *ngIf="isOpen" type="button" class="btn btn-danger" (click)="cancelJob()">Cancel</button>
                   </div>
               </div>
           </div>

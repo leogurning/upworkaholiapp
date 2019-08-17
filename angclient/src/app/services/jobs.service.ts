@@ -175,4 +175,14 @@ export class JobsService {
       }),
       catchError(this.handlerService.handleError));
   }
+
+  // Function to complete job
+  cancelJob(oBodyparam) {
+    // Invoke restful api from server to apply jobs
+    return this.httpc.put<any>(this.mainapihosturl + `/jobs/cancel`, oBodyparam, <Object>this.headerOptions)
+      .pipe(map((response) => {
+        return response;
+      }),
+      catchError(this.handlerService.handleError));
+  }
 }

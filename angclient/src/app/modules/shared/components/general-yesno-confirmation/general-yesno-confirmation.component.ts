@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from '../../../../common/toastr.service';
 
 @Component({
   selector: 'app-general-yesno-confirmation',
@@ -19,7 +20,9 @@ export class GeneralYesnoConfirmationComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    public modalRef: BsModalRef) { }
+    public modalRef: BsModalRef,
+    private toastr: ToastrService,
+  ) { }
 
   remarks = new FormControl('', Validators.nullValidator);
 
@@ -32,8 +35,14 @@ export class GeneralYesnoConfirmationComponent implements OnInit {
 
   confirm(formdata): void {
     this.cancelAction = false;
-    if (this.isRemarks) { this.returnData = formdata; }
-    this.modalRef.hide();
+    if (this.isRemarks && formdata.remarks) {
+      this.returnData = formdata;
+      this.modalRef.hide();
+    } else if (!this.isRemarks) {
+      this.modalRef.hide();
+    } else if (!formdata.remarks) {
+      this.toastr.error('Please input the cancel remarks !');
+    }
   }
 
   decline(): void {

@@ -29,7 +29,7 @@
           </li>
           <li class="list-group-item">
               Client Details: <br>
-              {{ data[0].employerdetails[0].companyName }}&nbsp; <span class="stars-container stars-{{ getRatingStars(data[0].employerdetails[0].rating) }}">★★★★★</span><br>
+              {{ data[0].employerdetails[0].companyName }}&nbsp; <span class="stars-container stars-{{ getRatingStars(data[0].employerdetails[0].rating ? data[0].employerdetails[0].rating : 0) }}">★★★★★</span><br>
               {{ data[0].employerdetails[0].title }} <br>
               {{ data[0].employerdetails[0].city }}, {{ data[0].employerdetails[0].province }}
           </li>

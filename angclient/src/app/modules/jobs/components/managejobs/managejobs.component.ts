@@ -73,6 +73,8 @@ export class ManagejobsComponent implements OnInit, OnDestroy {
     },
     err => {
         this.loading = false;
+        const errResponse = (err as ServiceErrorResponse);
+        this.toastr.error(errResponse.message);
     });
   }
 
@@ -314,5 +316,50 @@ export class ManagejobsComponent implements OnInit, OnDestroy {
   goBack(): void {
     // Go to list job route
     this.router.navigate([`jobs`]);
+  }
+
+  cancelJob(): void {
+    // Unsubscribe modal component after closed
+    this.subscriptions.push(
+      this.modalService.onHide.subscribe((reason: string) => {
+        if (!this.modalRef.content.cancelAction) {
+          // Call service to cancel job offer;
+          // Do action here to cancel the job
+          const payload = {
+            jobId: this.jobId,
+            remarks: this.modalRef.content.returnData.remarks,
+          };
+          // Cancel the job and set remarks
+          this.loading = true;
+          this.jobService.cancelJob(payload).subscribe(data => {
+            this.loading = false;
+            this.refreshJobData(this.jobId);
+          },
+          err => {
+            this.loading = false;
+            const errResponse = (err as ServiceErrorResponse);
+            this.toastr.error(errResponse.message);
+          });
+        }
+        // unsubscribe modal service
+        this.unsubscribe();
+      })
+    );
+
+    if (this.jobId) {
+      // This is modal component to display job details
+      this.modalRef = this.modalService.show(GeneralYesnoConfirmationComponent, {
+        class: 'gray modal-dialog-centered',
+        keyboard: false,
+        backdrop: true,
+        initialState: {
+          title: 'Confirmation',
+          data: { message: 'Are you sure to cancel the job ?' },
+          isRemarks: true,
+        }
+      });
+    } else {
+      this.toastr.error('No Job Id is selected.');
+    }
   }
 }
