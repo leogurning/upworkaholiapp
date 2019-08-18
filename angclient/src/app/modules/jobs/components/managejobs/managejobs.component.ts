@@ -1,3 +1,4 @@
+import { JobStatus } from '@app/common/variables';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -361,5 +362,13 @@ export class ManagejobsComponent implements OnInit, OnDestroy {
     } else {
       this.toastr.error('No Job Id is selected.');
     }
+  }
+
+  isAbleToCancel(): boolean {
+    let result = true;
+    if (this.job.status !== JobStatus.CMPL && this.job.status !== JobStatus.CANC) {
+      result = false;
+    }
+    return result;
   }
 }

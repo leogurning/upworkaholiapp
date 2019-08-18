@@ -41,7 +41,7 @@
                   </li>
                 </ul>
                 <div class="card-footer text-right">
-                    <button *ngIf="isOpen" type="button" class="btn btn-danger" (click)="cancelJob()">Cancel</button>
+                    <button *ngIf="isAbleToCancel()" type="button" class="btn btn-danger" (click)="cancelJob()">Cancel</button>
                   </div>
               </div>
           </div>
