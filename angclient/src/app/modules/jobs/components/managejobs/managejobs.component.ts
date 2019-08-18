@@ -366,7 +366,7 @@ export class ManagejobsComponent implements OnInit, OnDestroy {
 
   isAbleToCancel(): boolean {
     let result = true;
-    if (this.job.status !== JobStatus.CMPL && this.job.status !== JobStatus.CANC) {
+    if (this.job.status === JobStatus.CMPL || this.job.status === JobStatus.CANC) {
       result = false;
     }
     return result;
