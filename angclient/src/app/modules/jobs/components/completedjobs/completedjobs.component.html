@@ -75,8 +75,8 @@
                         <td data-label="Completed Date">{{ globalFunctions.dateToString(job.endDate) }}</td>
                         <td *ngIf="currentUser$.userType === 'FREELANCER'" data-label="Client">{{ job.employerdetails[0].companyName }}</td>
                         <td *ngIf="currentUser$.userType === 'EMPLOYER'" data-label="Worker">{{ job.freelancerdetails[0].firstName }}&nbsp;{{ job.freelancerdetails[0].lastName }}</td>
-                        <td *ngIf="currentUser$.userType === 'FREELANCER'" data-label="Worker Rating" class="stars-container stars-{{ getRatingStars(job.workerRating) }}">★★★★★</td>
-                        <td *ngIf="currentUser$.userType === 'EMPLOYER'" data-label="Client Rating" class="stars-container stars-{{ getRatingStars(job.clientRating) }}">★★★★★</td>
+                        <td *ngIf="currentUser$.userType === 'FREELANCER'" data-label="Worker Rating" class="stars-container stars-{{ getRatingStars(job.workerRating ? job.workerRating : 0) }}">★★★★★</td>
+                        <td *ngIf="currentUser$.userType === 'EMPLOYER'" data-label="Client Rating" class="stars-container stars-{{ getRatingStars(job.clientRating ? job.clientRating : 0) }}">★★★★★</td>
                         <td data-label="Action" class="text-action">
                             <button type="button" class="btn btn-info btn-sm" style="margin-right:5px" aria-label="Milestone" (click)="goToMilestoneJob(job._id)" data-toggle="tooltip" data-placement="top" title="Milestone" data-original-title="Tooltip on top">
                                Milestone
